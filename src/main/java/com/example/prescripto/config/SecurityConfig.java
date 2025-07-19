@@ -39,7 +39,9 @@ public class SecurityConfig {
                         .requestMatchers("/patient/**").hasRole("PATIENT")
                         .requestMatchers("/doctor/**").hasRole("DOCTOR")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/payment/**").hasRole("PATIENT")  // Adjust as needed
+                        .requestMatchers("/api/payment/**").hasRole("PATIENT")
+                        .requestMatchers(
+                                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -50,8 +52,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "https://prescriptox.netlify.app"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // Important if using cookies or Authorization headers
 

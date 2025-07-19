@@ -1,8 +1,12 @@
 package com.example.prescripto.models.doctor;
 
+import com.example.prescripto.models.junctionModel.Appointment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Doctor {
@@ -25,6 +29,9 @@ public class Doctor {
     private String addLine2;
     private String profileImage;
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments;
+
     public Doctor() {};
 
     public Doctor(String email, String name, String password, String role, String experience, Integer fees, String speciality, String about, String education, String addLine1, String addLine2, Boolean available) {
@@ -40,6 +47,14 @@ public class Doctor {
         this.addLine1 = addLine1;
         this.addLine2 = addLine2;
         this.available = available;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     public String getEmail() {

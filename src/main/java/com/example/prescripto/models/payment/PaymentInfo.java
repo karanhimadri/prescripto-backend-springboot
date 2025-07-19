@@ -1,9 +1,7 @@
 package com.example.prescripto.models.payment;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.prescripto.models.junctionModel.Appointment;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +20,9 @@ public class PaymentInfo {
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime paidAt;
+
+    @OneToOne(mappedBy = "paymentInfo")
+    private Appointment appointment;
 
     public PaymentInfo() {}
 

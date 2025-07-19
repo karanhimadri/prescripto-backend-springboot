@@ -18,8 +18,6 @@ import java.util.Collections;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-
-
     @Autowired
     private JwtUtil jwtUtil;
 

@@ -13,8 +13,7 @@ import java.util.List;
 @RequestMapping("/v1")
 public class PublicController {
 
-    @Autowired
-    PublicService publicService;
+    @Autowired PublicService publicService;
 
     @GetMapping("/")
     public String Home() {
@@ -30,4 +29,5 @@ public class PublicController {
     public List<DoctorDto> getAllDoctorsInfo() {
         return publicService.getAllDoctors();
     }
+
 }

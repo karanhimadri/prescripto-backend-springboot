@@ -1,13 +1,20 @@
 package com.example.prescripto.services;
 
+import com.example.prescripto.dto.ApiResponse;
 import com.example.prescripto.dto.AuthResponseDto;
 import com.example.prescripto.dto.BaseResponseDto;
 import com.example.prescripto.dto.SuccessAndErrorResDto;
-import com.example.prescripto.dto.admin.GeneralResponseForAdminDto;
+import com.example.prescripto.dto.appointment.AppointmentBookingRequestDto;
+import com.example.prescripto.dto.patient.AppointmentDto;
 import com.example.prescripto.dto.patient.GetInfoDto;
 import com.example.prescripto.dto.patient.LoginResponseDto;
+import com.example.prescripto.models.doctor.Doctor;
+import com.example.prescripto.models.junctionModel.Appointment;
 import com.example.prescripto.models.patient.Patient;
 import com.example.prescripto.models.patient.PatientInfo;
+import com.example.prescripto.models.payment.PaymentInfo;
+import com.example.prescripto.repository.doctor.DoctorRepository;
+import com.example.prescripto.repository.junctionRepository.AppointmentRepository;
 import com.example.prescripto.repository.patient.PatientInfoRepository;
 import com.example.prescripto.repository.patient.PatientRepository;
 import com.example.prescripto.utils.JwtUtil;
@@ -24,7 +31,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class PatientService {
@@ -32,6 +40,8 @@ public class PatientService {
     private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
     @Autowired PatientRepository patientRepository;
     @Autowired PatientInfoRepository patientInfoRepository;
+    @Autowired DoctorRepository doctorRepository;
+    @Autowired AppointmentRepository appointmentRepository;
     @Autowired JwtUtil jwtUtil;
     @Autowired PasswordEncoder passwordEncoder;
 
@@ -69,6 +79,8 @@ public class PatientService {
 
         if(optionalPatientInfo.isEmpty()) {
             PatientInfo newInfo = new PatientInfo(getInfoDto.getEmail(), getInfoDto.getPhone(), getInfoDto.getAddLine1(), getInfoDto.getAddLine2(), getInfoDto.getGender(), getInfoDto.getDob(),"");
+            Optional<Patient> patient = patientRepository.findById(email);
+            patient.ifPresent(value -> newInfo.setFullName(value.getName()));
             patientInfoRepository.save(newInfo);
             return new SuccessAndErrorResDto(true, "Patient information successfully added.");
         }
@@ -91,12 +103,17 @@ public class PatientService {
         Optional<Patient> optPatient = patientRepository.findById(email);
         Optional<PatientInfo> optPatientInfo = patientInfoRepository.findById(email);
 
-        if(optPatient.isEmpty() || optPatientInfo.isEmpty()) {
+        if(optPatient.isEmpty()) {
             return new SuccessAndErrorResDto(false,"User not found.");
         }
 
-        PatientInfo patientInfo = optPatientInfo.get();
         Patient patient = optPatient.get();
+
+        if(optPatientInfo.isEmpty()) {
+            return new GetInfoDto(patient.getEmail(), patient.getName(), "", "", "", "", null, "");
+        }
+
+        PatientInfo patientInfo = optPatientInfo.get();
 
         return new GetInfoDto(patient.getEmail(), patient.getName(), patientInfo.getPhone(), patientInfo.getAddLine1(), patientInfo.getAddLine2(), patientInfo.getGender(), patientInfo.getDob(), patientInfo.getProfileImage());
     }
@@ -154,6 +171,81 @@ public class PatientService {
             System.out.println(e.getMessage());
             return new SuccessAndErrorResDto(false,"Internal server error.");
         }
+    }
+
+    public SuccessAndErrorResDto bookAppointment(AppointmentBookingRequestDto abrDto) {
+
+        Optional<PatientInfo> optPatient = patientInfoRepository.findById(abrDto.getPatientId());
+        Optional<Doctor> optDoctor = doctorRepository.findById(abrDto.getDoctorId());
+
+        if(optPatient.isEmpty()) {
+            return new SuccessAndErrorResDto(false, "No patient found");
+        }
+        if(optDoctor.isEmpty()) {
+            return new SuccessAndErrorResDto(false, "No doctor found");
+        }
+
+        Appointment appointment = new Appointment();
+
+        LocalDate appointmentDate = LocalDate.parse(abrDto.getAppointmentDate());
+        appointment.setAppointmentDate(appointmentDate);
+
+        appointment.setAppointmentTime(abrDto.getAppointmentTime());
+        appointment.setPatientInfo(optPatient.get());
+        appointment.setDoctor(optDoctor.get());
+        appointment.setStatus("SCHEDULED");
+
+        appointmentRepository.save(appointment);
+
+        return new SuccessAndErrorResDto(true, "Appointment booked successfully!");
+    }
+
+    public ApiResponse<List<AppointmentDto>> getAllAppointments(String patientId) {
+        Optional<PatientInfo> optPatient = patientInfoRepository.findById(patientId);
+
+        if (optPatient.isEmpty()) {
+            return new ApiResponse<>(false, "No Patient found", Collections.emptyList());
+        }
+
+        List<AppointmentDto> appointmentDtos = optPatient.get().getAppointments().stream()
+                .map(appointment -> {
+                    Doctor doc = appointment.getDoctor();
+                    PaymentInfo pay = appointment.getPaymentInfo();
+                    return new AppointmentDto(
+                            appointment.getId(),
+                            doc != null ? doc.getProfileImage() : null,
+                            doc != null ? doc.getName() : null,
+                            doc != null ? doc.getSpeciality() : null,
+                            doc != null ? doc.getFees() : null,
+                            doc != null ? doc.getAddLine1() : null,
+                            doc != null ? doc.getAddLine2() : null,
+                            appointment.getAppointmentDate(),
+                            appointment.getAppointmentTime(),
+                            pay != null ? pay.getStatus() : null,
+                            appointment.getStatus()
+                    );
+                }).toList();
+
+        return new ApiResponse<>(true, "Appointment Details fetched.", appointmentDtos);
+    }
+
+    public SuccessAndErrorResDto cancelAppointment(Long appointmentId) {
+        Optional<Appointment> optAppointment = appointmentRepository.findById(appointmentId);
+
+        if(optAppointment.isEmpty()) {
+            return new SuccessAndErrorResDto(false, "Appointment not found");
+        }
+
+        Appointment appointment = optAppointment.get();
+
+        if ("CANCELED".equalsIgnoreCase(appointment.getStatus())) {
+            return new SuccessAndErrorResDto(false, "Appointment is already canceled.");
+        }
+
+        appointment.setStatus("CANCELED");
+        appointmentRepository.save(appointment);
+
+        return new SuccessAndErrorResDto(true, "Appointment canceled successfully");
     }
 
 }

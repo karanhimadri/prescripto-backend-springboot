@@ -1,21 +1,28 @@
 package com.example.prescripto.models.patient;
 
+import com.example.prescripto.models.junctionModel.Appointment;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class PatientInfo {
     @Id
     private String email;
 
+    private String fullName;
     private String phone;
     private String addLine1;
     private String addLine2;
     private String gender;
     private LocalDate dob;
     private String profileImage;
+
+    @OneToMany(mappedBy = "patientInfo")
+    private List<Appointment> appointments;
 
     public PatientInfo() {};
     public PatientInfo(String email, String phone, String addLine1, String addLine2, String gender, LocalDate dob, String profileImage) {
@@ -26,6 +33,22 @@ public class PatientInfo {
         this.gender = gender;
         this.dob = dob;
         this.profileImage = profileImage;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {

@@ -2,8 +2,10 @@ package com.example.prescripto.services;
 
 import com.example.prescripto.dto.SuccessAndErrorResDto;
 import com.example.prescripto.dto.payment.VerifyPaymentRequestDto;
+import com.example.prescripto.models.junctionModel.Appointment;
 import com.example.prescripto.models.payment.PaymentInfo;
 import com.example.prescripto.dto.payment.PaymentRequestDto;
+import com.example.prescripto.repository.junctionRepository.AppointmentRepository;
 import com.example.prescripto.repository.payment.PaymentInfoRepository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class PaymentService {
     private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
     @Autowired PaymentInfoRepository paymentInfoRepository;
+    @Autowired AppointmentRepository appointmentRepository;
 
     @Value("${razorpay.key}")
     private String razorpayKey;
@@ -74,19 +78,20 @@ public class PaymentService {
         }
     }
 
+    @Transactional
     public SuccessAndErrorResDto verifyPayment(VerifyPaymentRequestDto vpRequest) {
+        Long appointmentId = vpRequest.getAppointmentId();
         String orderId = vpRequest.getRazorpayOrderId();
         String paymentId = vpRequest.getRazorpayPaymentId();
         String signature = vpRequest.getRazorpaySignature();
 
-        Optional<PaymentInfo> paymentInfo = paymentInfoRepository.findByRazorpayOrderId(orderId);
-        if(paymentInfo.isEmpty()) {
-            return new SuccessAndErrorResDto(false, "Payment info not found");
-        }
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid appointment for payment."));
 
-        PaymentInfo pInfo = paymentInfo.get();
+        PaymentInfo paymentInfo = paymentInfoRepository.findByRazorpayOrderId(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Payment info not found for given order ID."));
 
-        if ("paid".equals(pInfo.getStatus())) {
+        if ("paid".equalsIgnoreCase(paymentInfo.getStatus())) {
             return new SuccessAndErrorResDto(true, "Payment already verified.");
         }
 
@@ -94,24 +99,27 @@ public class PaymentService {
             String data = orderId + "|" + paymentId;
             boolean isValid = Utils.verifySignature(data, signature, razorpaySecret);
 
-            if(isValid) {
+            if (isValid) {
                 ZonedDateTime currentZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
 
-                pInfo.setRazorpayPaymentId(paymentId);
-                pInfo.setRazorpaySignature(signature);
-                pInfo.setPaidAt(currentZonedDateTime.toLocalDateTime());
-                pInfo.setStatus("paid");
+                paymentInfo.setRazorpayPaymentId(paymentId);
+                paymentInfo.setRazorpaySignature(signature);
+                paymentInfo.setPaidAt(currentZonedDateTime.toLocalDateTime());
+                paymentInfo.setStatus("paid");
 
-                paymentInfoRepository.save(pInfo);
+                // Save payment info and link to appointment
+                paymentInfoRepository.save(paymentInfo);
+
+                appointment.setPaymentInfo(paymentInfo);
+                appointmentRepository.save(appointment);
 
                 return new SuccessAndErrorResDto(true, "Payment verified successfully.");
             } else {
-                return new SuccessAndErrorResDto(false, "Payment was failed.");
+                return new SuccessAndErrorResDto(false, "Invalid payment signature.");
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return new SuccessAndErrorResDto(false, "Verification failed.");
+            return new SuccessAndErrorResDto(false, "Payment verification failed due to an internal error.");
         }
     }
 }

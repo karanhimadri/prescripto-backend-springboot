@@ -1,10 +1,9 @@
 package com.example.prescripto.models.junctionModel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import com.example.prescripto.models.doctor.Doctor;
+import com.example.prescripto.models.patient.PatientInfo;
+import com.example.prescripto.models.payment.PaymentInfo;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,66 +12,84 @@ import java.time.LocalTime;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long appointmentId;
+    private Long id;
 
-    @NotNull
-    private String patientId;
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private PatientInfo patientInfo;
 
-    @NotNull
-    private String doctorId;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
-    @NotNull
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private PaymentInfo paymentInfo;
+
     private LocalDate appointmentDate;
-
-    @NotNull
-    private LocalTime appointmentTime;
+    private String appointmentTime;
+    private String status; // "SCHEDULED", "CANCELED", or "COMPLETED"
 
     public Appointment() {}
 
-    public Appointment(String patientId, String doctorId, LocalDate appointmentDate, LocalTime appointmentTime) {
-        this.patientId = patientId;
-        this.doctorId = doctorId;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
+    public Long getId() {
+        return id;
     }
 
-    public Long getAppointmentId() {
-        return appointmentId;
+    public String getStatus() {
+        return status;
     }
 
-    public String getPatientId() {
-        return patientId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getDoctorId() {
-        return doctorId;
+    public PatientInfo getPatientInfo() {
+        return patientInfo;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public PaymentInfo getPaymentInfo() {
+        return paymentInfo;
     }
 
     public LocalDate getAppointmentDate() {
         return appointmentDate;
     }
 
-    public LocalTime getAppointmentTime() {
+    public String getAppointmentTime() {
         return appointmentTime;
     }
 
-    public void setAppointmentId(Long appointmentId) {
-        this.appointmentId = appointmentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setPatientInfo(PatientInfo patientInfo) {
+        this.patientInfo = patientInfo;
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public void setPaymentInfo(PaymentInfo paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 
     public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
-    public void setAppointmentTime(LocalTime appointmentTime) {
+    public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
+    }
+
+    @Override
+    public String toString() {
+        return "payment: "+ paymentInfo.getAmount();
     }
 }

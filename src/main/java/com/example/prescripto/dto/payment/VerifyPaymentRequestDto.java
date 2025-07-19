@@ -1,11 +1,20 @@
 package com.example.prescripto.dto.payment;
 
 public class VerifyPaymentRequestDto {
+    private Long appointmentId;
     private String razorpayPaymentId;
     private String razorpayOrderId;
     private String razorpaySignature;
 
     public VerifyPaymentRequestDto() {}
+
+    public Long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Long appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 
     public String getRazorpayPaymentId() {
         return razorpayPaymentId;

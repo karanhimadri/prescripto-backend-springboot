@@ -1,208 +1,275 @@
-# 🏥 Prescripto -  Spring Boot Healthcare Management System
+# 🏥 Prescripto - Cloud-Ready Healthcare Management System
 
-A comprehensive healthcare management platform built with **Spring Boot** that connects patients with healthcare providers, enabling seamless appointment booking, profile management, and secure payment processing.
+> **A production-grade, cloud-deployed Spring Boot application demonstrating full-stack development, DevOps practices, and enterprise-level architecture**
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.oracle.com/java/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-blue.svg)](https://www.docker.com/)
+[![Render](https://img.shields.io/badge/Deployed-Render.com-success.svg)](https://render.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🌟 Features
+## 🚀 Project Overview
 
-### 👥 Multi-Role Authentication System
-- **Patients**: Account creation, profile management, doctor discovery
-- **Doctors**: Professional profiles with specialization management
-- **Admins**: System administration and doctor onboarding
-- **JWT-based Authentication** with role-based access control
+Prescripto is a **fully-deployed, cloud-ready healthcare management backend** that showcases modern software development practices, from code to production deployment. This project demonstrates expertise in **Spring Boot development**, **cloud deployment**, **DevOps workflows**, and **production-ready architecture**.
 
-### 🔐 Security & Authorization
-- Spring Security integration with JWT tokens
-- Role-based access control (RBAC)
-- Secure password hashing
-- CORS configuration for frontend integration
+## 💼 Professional Skills Demonstrated
 
-### 💳 Payment Integration
-- **Razorpay** payment gateway integration
-- Secure payment order creation and verification
-- Payment status tracking and history
-- Transaction security with signature verification
+### 🏗️ **Backend Development Excellence**
+- **Spring Boot** ecosystem mastery with secure, scalable architecture
+- **RESTful API** design with proper HTTP methods and status codes
+- **JWT Authentication** with role-based access control (RBAC)
+- **Database modeling** with JPA/Hibernate and MySQL optimization
+- **Payment integration** with Razorpay API for secure transactions
 
-### 📋 Appointment Management
-- Doctor-patient appointment booking system
-- Appointment status tracking
-- Payment integration for consultations
-- Schedule management
+### ☁️ **DevOps & Cloud Deployment**
+- **Docker containerization** for consistent development-to-production environments
+- **Cloud deployment** on Render.com using both Docker and GitHub integration
+- **Database hosting** on Railway with environment-based configuration
+- **Application monitoring** with Spring Boot Actuator and health endpoints
+- **Service availability** management with UptimeRobot monitoring
 
-### 🖼️ File Management
-- Profile image upload for patients and doctors
-- Secure file storage and retrieval
-- Multiple image format support
+### 🔐 **Security & Production Readiness**
+- **Spring Security** implementation with JWT filter chains
+- **Environment-based configuration** with secure credential management
+- **File upload handling** with security validations
+- **CORS configuration** for cross-origin security
+- **Production monitoring** with health checks and observability
 
-## 🛠️ Technology Stack
+## ✨ Key Features & Achievements
 
-| Category | Technology |
-|----------|------------|
-| **Backend Framework** | Spring Boot 3.5.3 |
-| **Language** | Java 17+ |
-| **Database** | MySQL 8.0+ |
-| **ORM** | Spring Data JPA / Hibernate |
-| **Security** | Spring Security + JWT |
-| **Payment Gateway** | Razorpay |
-| **Build Tool** | Maven |
-| **Architecture** | RESTful API, MVC Pattern |
+### 🎯 **What I Built and Deployed**
+- ✅ **JWT-secured REST APIs** for Patients, Doctors, and Admins with role-based access
+- ✅ **Dockerized Spring Boot application** for consistent dev-to-deploy environments
+- ✅ **Cloud deployment** to Render.com using both Docker and GitHub-based methods
+- ✅ **Cloud database integration** with Railway MySQL using environment variables
+- ✅ **Payment processing** with Razorpay API for appointment transactions
+- ✅ **File management system** for image uploads with static file serving
+- ✅ **Health monitoring** endpoints (`/actuator/health`, `/v1/`) for observability
+- ✅ **Production-ready configuration** with security and monitoring best practices
 
-## 🏗️ Project Architecture
+## 🛠️ Technology Stack & Architecture
 
+| **Category** | **Technology** | **Purpose** |
+|--------------|----------------|-------------|
+| **Backend Framework** | Spring Boot 3.5.3 | RESTful API development with enterprise features |
+| **Language** | Java 17+ | Modern Java with latest language features |
+| **Database** | MySQL 8.0+ (Railway Cloud) | Relational database with cloud hosting |
+| **Security** | Spring Security + JWT | Stateless authentication with role-based access |
+| **Payment** | Razorpay API | Secure payment processing for healthcare services |
+| **DevOps** | Docker + Render.com | Containerization and cloud deployment |
+| **Monitoring** | Spring Actuator | Application health and metrics monitoring |
+| **Architecture** | MVC + Repository Pattern | Clean, maintainable code structure |
+
+### �️ **Enterprise Architecture Pattern**
 ```
-src/
-├── main/java/com/example/prescripto/
-│   ├── config/          # Security & JWT Configuration
-│   ├── controller/      # REST API Controllers
-│   ├── dto/            # Data Transfer Objects
-│   ├── models/         # JPA Entity Models
-│   ├── repository/     # Data Access Layer
-│   ├── services/       # Business Logic Layer
-│   └── utils/          # Utility Classes
-└── resources/
-    ├── application.properties
-    ├── static/         # Static Resources
-    └── templates/      # View Templates
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Controllers   │ ──▶│    Services     │ ──▶│  Repositories   │
+│  (REST Layer)   │    │ (Business Logic)│    │ (Data Access)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│      DTOs       │    │   Utilities     │    │   JPA Entities  │
+│ (Data Transfer) │    │   (Helpers)     │    │ (Database Maps) │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-## 🚀 Getting Started
+## 🌐 Deployment & DevOps Workflow
 
-### Prerequisites
+### **Production Deployment Stack**
+- **🐳 Docker Hub**: Container registry for application images
+- **☁️ Render.com**: Cloud platform for application hosting
+- **🗄️ Railway**: Cloud MySQL database hosting
+- **📊 UptimeRobot**: Service monitoring to prevent free-tier sleep
+- **🔐 Environment Variables**: Secure credential management
 
-- **Java 17+** installed
-- **MySQL 8.0+** running
-- **Maven 3.6+** installed
-- **Git** for version control
+### **Deployment Methods Mastered**
+1. **Docker-based Deployment**: Built, tagged, and pushed images to Docker Hub
+2. **GitHub Integration**: Direct deployment from repository with auto-builds
+3. **Environment Management**: Configured production variables via Render dashboard
+4. **Database Connectivity**: Connected Spring Boot to cloud MySQL via environment configs
 
-### Installation & Setup
+## � Learning Outcomes & Professional Growth
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/prescripto.git
-   cd prescripto
-   ```
+### **Full-Stack Development Lifecycle Mastery**
+- ✅ **Code → Container → Cloud**: Complete development-to-production pipeline
+- ✅ **Production-Ready Design**: Security, monitoring, and role-based access control
+- ✅ **DevOps Integration**: Docker workflows and cloud deployment strategies
+- ✅ **Real-World Tools**: UptimeRobot, Railway, Actuator, and Spring Cloud concepts
 
-2. **Database Setup**
-   ```sql
-   CREATE DATABASE prescriptodb;
-   CREATE USER 'prescripto_user'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON prescriptodb.* TO 'prescripto_user'@'localhost';
-   ```
+### **Enterprise Development Practices**
+- ✅ **Stateless Backend Architecture** with JWT authentication
+- ✅ **SecurityFilterChain** implementation for fine-grained access control  
+- ✅ **Clean Architecture** with Controller → Service → Repository pattern
+- ✅ **Environment-based Configuration** for development, testing, and production
 
-3. **Configure Application Properties**
-   ```properties
-   # Database Configuration
-   spring.datasource.url=jdbc:mysql://localhost:3306/prescriptodb
-   spring.datasource.username=prescripto_user
-   spring.datasource.password=your_password
-   
-   # Razorpay Configuration
-   razorpay.key.id=your_razorpay_key_id
-   razorpay.key.secret=your_razorpay_secret
-   
-   # JWT Configuration
-   jwt.secret=your_jwt_secret_key
-   jwt.expiration=86400000
-   ```
+## 🚀 Quick Start Guide
 
-4. **Access the Application**
-   - Application will be running on `http://localhost:8080`
-   - API documentation: `http://localhost:8080/swagger-ui.html`
+### **Prerequisites**
+- Java 17+, MySQL 8.0+, Docker (optional)
+- Razorpay account for payment testing
+- Cloud accounts: Render.com, Railway (for production deployment)
 
-## 📚 API Documentation
+### **Local Development Setup**
+```bash
+# Clone and navigate to project
+git clone https://github.com/karanhimadri/prescripto.git
+cd prescripto
 
-### Authentication Endpoints
+# Build and run application
+./mvnw clean install
+./mvnw spring-boot:run
+
+# Access application
+curl http://localhost:8080/v1/  # Health check
+```
+
+### **Docker Deployment**
+```bash
+# Build Docker image
+docker build -t prescripto:latest .
+
+# Run with volume mounting for uploads
+docker run -p 8080:8080 -v $(pwd)/uploads:/app/uploads prescripto:latest
+
+# Push to Docker Hub (production workflow)
+docker tag prescripto:latest username/prescripto:latest
+docker push username/prescripto:latest
+```
+
+## � API Architecture & Endpoints
+
+### **Security Implementation**
+- **🔐 JWT Authentication**: Stateless token-based security
+- **🛡️ Role-Based Access**: Patient, Doctor, Admin authorization levels
+- **🔒 BCrypt Encryption**: Secure password hashing
+- **🌐 CORS Configuration**: Cross-origin request security
+
+### **Core API Endpoints**
+
+#### **Public Access** (No Authentication)
 ```http
-POST /api/public/login          # User login
-POST /api/public/patient-register  # Patient registration
-GET  /api/public/doctors        # Public doctor list
+GET    /v1/                    # Health check & welcome
+POST   /v1/panel/login         # Admin/Doctor authentication
+GET    /actuator/health        # Application monitoring endpoint
 ```
 
-### Patient Endpoints
+#### **Patient Operations** (JWT Required)
 ```http
-GET    /api/patient/profile     # Get patient profile
-PUT    /api/patient/profile     # Update patient profile
-POST   /api/patient/upload-image # Upload profile image
+POST   /patient/create-account      # User registration
+POST   /patient/login               # Patient authentication  
+GET    /patient/me                  # Profile retrieval
+POST   /patient/book-appointment    # Appointment booking
+POST   /patient/upload-patient-image # Profile image upload
 ```
 
-### Admin Endpoints
+#### **Admin Operations** (Admin JWT Required)
 ```http
-POST   /api/admin/add-doctor    # Add new doctor
-GET    /api/admin/doctors       # Manage doctors
+POST   /admin/create-doctor         # Doctor onboarding with image upload
+GET    /admin/dashboard             # Administrative overview
 ```
 
-### Payment Endpoints
+#### **Payment Processing** (JWT Required)
 ```http
-POST   /api/payment/create-order    # Create payment order
-POST   /api/payment/verify-payment  # Verify payment
+POST   /api/payment/create-order    # Razorpay order creation
+POST   /api/payment/verify          # Payment verification & completion
 ```
 
-## 🗄️ Database Schema
+## � Database Design & Cloud Integration
 
-### Core Entities
-- **Patient**: User credentials and profile information
-- **Doctor**: Healthcare provider profiles and specializations
-- **Admin**: System administrator accounts
-- **Appointment**: Booking and scheduling information
-- **PaymentInfo**: Payment transaction records
+### **Production Database Architecture**
+- **🌐 Railway Cloud MySQL**: Hosted database with environment-based connectivity
+- **🔄 Auto-Schema Management**: Hibernate DDL auto-updates for seamless deployments
+- **📊 Entity Relationships**: JPA-mapped associations between core healthcare entities
+- **🔍 Query Optimization**: MySQL 8 dialect with performance tuning
 
-## 🔧 Configuration
+### **Core Data Models**
+| **Entity** | **Purpose** | **Key Features** |
+|------------|-------------|------------------|
+| `Admin` | System administration | BCrypt authentication, role management |
+| `Patient/PatientInfo` | User management | Split model for auth vs. profile data |
+| `Doctor` | Healthcare providers | Specialization tracking, image uploads |
+| `Appointment` | Service bookings | Patient-doctor relationships, payment integration |
+| `PaymentInfo` | Transaction records | Razorpay integration, payment verification |
 
-### Environment Variables
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=prescriptodb
-DB_USER=prescripto_user
-DB_PASSWORD=your_password
-RAZORPAY_KEY_ID=your_key_id
-RAZORPAY_SECRET=your_secret
-JWT_SECRET=your_jwt_secret
+## 🔧 Production Configuration Management
+
+### **Environment-Based Security**
+```bash
+# Production Environment Variables (Render.com)
+DATABASE_URL=mysql://railway-cloud-connection
+RAZORPAY_KEY_ID=rzp_live_production_key
+RAZORPAY_KEY_SECRET=production_secret_key
+JWT_SECRET=64-character-production-secret
+ADMIN_EMAIL=production-admin@domain.com
 ```
 
-## 📈 Performance & Security
+### **Cloud Configuration Features**
+- ✅ **Secure credential management** via environment variables
+- ✅ **Database connection pooling** for high-availability
+- ✅ **File upload security** with multipart validation
+- ✅ **CORS configuration** for frontend integration
+- ✅ **Actuator endpoints** for monitoring and health checks
 
-- **JWT Token-based Authentication** for stateless security
-- **Password Encryption** using BCrypt
-- **SQL Injection Prevention** through JPA/Hibernate
-- **CORS Configuration** for secure cross-origin requests
-- **File Upload Validation** for security
-- **Payment Security** with Razorpay signature verification
+## 📊 Project Impact & Professional Value
 
-## 🚀 Deployment
+### **Technical Leadership Demonstrated**
+- 🎯 **Full-Stack Ownership**: End-to-end development from database design to cloud deployment
+- 🏗️ **Architecture Design**: Scalable, maintainable code structure following enterprise patterns  
+- 🔐 **Security Implementation**: Production-grade authentication and authorization systems
+- ☁️ **DevOps Integration**: Modern deployment workflows with containerization
 
-### Docker Deployment
-```dockerfile
-FROM openjdk:17-jdk-slim
-COPY target/prescripto-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
-```
+### **Production-Ready Implementation**
+- ✅ **Monitoring & Observability**: Health checks, metrics, and uptime monitoring
+- ✅ **Payment Processing**: Secure financial transactions with signature verification
+- ✅ **File Management**: Secure upload/download with proper validation
+- ✅ **Database Optimization**: Connection pooling, query optimization, and cloud hosting
 
-## 📄 License
+## 🎯 Resume-Ready Accomplishments
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**"Developed and deployed a cloud-ready Spring Boot healthcare management system demonstrating:**
+- **Backend Development**: RESTful APIs with JWT authentication and role-based access control
+- **Cloud Deployment**: Dockerized application deployed to Render.com with Railway database integration  
+- **Payment Integration**: Secure Razorpay payment processing with transaction verification
+- **DevOps Practices**: Container workflows, environment management, and production monitoring"
 
-## 👨‍💻 Developer
+## � Live Demo & Resources
 
-**Your Name**
-- Email: Karanhimadri1234@gmail.com
-- LinkedIn: [LinkedIn Profile](https://linkedin.com/in/himadrikaran)
-- Portfolio: [Himadri.me](https://himadri.me)
+### **Production Links**
+- 🌐 **Live Application**: [Deployed on Render.com](https://prescripto-backend.onrender.com/v1/)
+- 💾 **Docker Image**: Available on Docker Hub  
+- 📊 **Monitoring**: UptimeRobot health checks configured
+- 🗄️ **Database**: Railway cloud MySQL hosting
 
-## 🙏 Acknowledgments
+### **Test Credentials**
+- **Admin Login**: `admin@gmail.com` / `admin123`
+- **Payment Testing**: Razorpay test mode enabled
+- **Health Check**: `/actuator/health` endpoint active
 
-- Spring Boot community for excellent documentation
-- Razorpay for secure payment integration
-- MySQL for reliable database management
-- JWT for stateless authentication
+## 👨‍💻 Developer Profile
+
+**Himadri Karan**  
+*Backend Developer & Cloud Solutions Specialist*
+
+- 📧 **Email**: [Karanhimadri1234@gmail.com](mailto:Karanhimadri1234@gmail.com)
+- 💼 **LinkedIn**: [linkedin.com/in/himadrikaran](https://linkedin.com/in/himadrikaran)  
+- 🌐 **Portfolio**: [Himadri.me](https://himadri.me)
+- � **GitHub**: [github.com/karanhimadri](https://github.com/karanhimadri)
 
 ---
 
-⭐ **Star this repository if you found it helpful!**
+## 🌟 Why This Project Matters
 
-📧 **Have questions?** Feel free to reach out or create an issue.
+This project showcases the complete software development lifecycle that employers value:
+- **Problem Solving**: Built a complex healthcare domain application
+- **Modern Architecture**: Used current industry-standard frameworks and patterns  
+- **Production Deployment**: Handled real-world deployment challenges and solutions
+- **Security Focus**: Implemented enterprise-level authentication and data protection
+- **DevOps Integration**: Demonstrated modern development and deployment practices
+
+---
+
+⭐ **Star this repository to see more enterprise-level projects!**
+
+📧 **Interested in collaboration?** Let's connect and build something amazing together.

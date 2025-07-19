@@ -1,0 +1,23 @@
+# Build artifacts
+target/
+.mvn/
+*.log
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# System
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Secrets
+.env
+
+# Uploaded images (mounted separately)
+uploads/
